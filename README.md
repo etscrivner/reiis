@@ -6,7 +6,7 @@ Reiis
 Reified redis (reiis) is a python library that allows you to treat data 
 persisted in redis like native python objects. While currently a work in
 progress the goal is to allow simplified interaction with redis using python
-and sane default behavior.
+objects and to provide a sane set of default behaviors.
 
 ## Lists
 
