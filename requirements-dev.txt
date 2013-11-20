@@ -1,3 +1,5 @@
 sure
 mock
 nose
+ipython
+ipdb

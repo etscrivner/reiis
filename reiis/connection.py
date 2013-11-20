@@ -16,7 +16,7 @@ REDIS_DEFAULT_PORT = 6379
 Host = namedtuple('Host', ['address', 'port'])
 
 
-def setup(host_and_port):
+def setup(host, port=REDIS_DEFAULT_PORT):
     """Attempt to establish a connection to redis.
 
     This method will attempt to establish a redis connection using the given
@@ -25,15 +25,20 @@ def setup(host_and_port):
 
     :Parameters:
 
-      - `host_and_port` tuple of (basestring) or (basestring, int) - The host or
-        host and port.
+      - `host` basestring - The connection host address
+      - `port` int (optional) - The port to connect to
 
     :Examples:
 
     >>> from reiis import connection
-    >>> connection.setup(('localhost', 6379))
-    >>> connection.setup(('localhost'))
+    >>> connection.setup('localhost', 6379)
+    >>> connection.setup('localhost')
 
     """
-    if not isinstance(host_and_port, tuple):
-        raise TypeError('Expected tuple, found {}'.format(repr(host_and_port)))
+    if not isinstance(host, basestring):
+        raise TypeError(
+            'Expected host to be basestring, found {}'.format(repr(host)))
+    if not isinstance(port, (int, long)):
+        raise TypeError(
+            'Expected port to be (int, long), found {}'.format(repr(port)))
+    
