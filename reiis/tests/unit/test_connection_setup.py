@@ -4,6 +4,7 @@ and handles error conditions appropriately.
 """
 from unittest.case import TestCase
 from mock import patch
+import redis
 
 from reiis import connection
 
@@ -32,3 +33,8 @@ def test_should_raise_exception_if_non_int_value_given_for_port():
         TypeError, 'Expected port to be (int, long), found [1, 2]')
 
     
+def test_should_pass_parameters_to_redis_on_success():
+    """Should pass the host and port to redis on success"""
+    with patch.object(redis.Redis, '__init__', return_value=None) as init_redis:
+        connection.setup('localhost', 1234)
+    init_redis.assert_called_with('localhost', 1234)

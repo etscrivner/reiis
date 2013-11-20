@@ -10,10 +10,8 @@ import redis
 
 # The default port used for redis connections without a given port
 REDIS_DEFAULT_PORT = 6379
-
-
-# Defines a redis host for establishing a connection
-Host = namedtuple('Host', ['address', 'port'])
+# The global redis connection used throughout the library
+_connection = None
 
 
 def setup(host, port=REDIS_DEFAULT_PORT):
@@ -41,4 +39,5 @@ def setup(host, port=REDIS_DEFAULT_PORT):
     if not isinstance(port, (int, long)):
         raise TypeError(
             'Expected port to be (int, long), found {}'.format(repr(port)))
+    _connection = redis.Redis(host, port)
     
