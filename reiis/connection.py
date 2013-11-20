@@ -32,5 +32,8 @@ def setup(host_and_port):
 
     >>> from reiis import connection
     >>> connection.setup(('localhost', 6379))
+    >>> connection.setup(('localhost'))
 
     """
+    if not isinstance(host_and_port, tuple):
+        raise TypeError('Expected tuple, found {}'.format(repr(host_and_port)))
