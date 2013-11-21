@@ -1,6 +1,6 @@
 """In order to query redis we need to first establish a connection to be used 
 across all of our objects. This module contains the interface for establishing
-the connection and handle connection specific errors that may arise.
+the connection and handling connection specific errors that may arise.
 
 """
 from collections import namedtuple
@@ -10,6 +10,7 @@ import redis
 
 # The default port used for redis connections without a given port
 REDIS_DEFAULT_PORT = 6379
+
 # The global redis connection used throughout the library
 _connection = None
 
@@ -40,4 +41,13 @@ def setup(host, port=REDIS_DEFAULT_PORT):
         raise TypeError(
             'Expected port to be (int, long), found {}'.format(repr(port)))
     _connection = redis.Redis(host, port)
+
+
+def get_connection():
+    """Retrieve the established redis connection.
+
+    :return: A redis connection
+    :rtype: redis.Redis
     
+    """
+    return _connection

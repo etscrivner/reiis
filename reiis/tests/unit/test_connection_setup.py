@@ -1,5 +1,5 @@
-"""Verify that the code for establishing connections to redis works as expected
-and handles error conditions appropriately.
+"""Verify that the module for establishing connections to redis works as
+expected and handles error conditions appropriately.
 
 """
 from unittest.case import TestCase
