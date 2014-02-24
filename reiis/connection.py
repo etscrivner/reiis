@@ -3,7 +3,7 @@ across all of our objects. This module contains the interface for establishing
 the connection and handling connection specific errors that may arise.
 
 """
-from collections import namedtuple
+nnfrom collections import namedtuple
 
 import redis
 
@@ -22,11 +22,11 @@ def setup(host, port=REDIS_DEFAULT_PORT):
     host and port. If connecting fails then an exception may be raised from
     the underlying redis library.
 
-    :Parameters:
-
-      - `host` basestring - The connection host address
-      - `port` int (optional) - The port to connect to
-
+    :param host: The connection host address
+    :type host: basestring
+    :param port: The port to connect to (optional)
+    :type port: int
+    
     :Examples:
 
     >>> from reiis import connection
