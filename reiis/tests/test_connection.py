@@ -36,8 +36,18 @@ class SetupTest(TestCase):
 
 class ConnectionManagerTest(TestCase):
 
+    def tearDown(self):
+        super(ConnectionManagerTest, self).tearDown()
+        connection.global_redis = None
+
     def test_should_raise_error_if_no_connection_establish(self):
         """Should raise connection error if no connection was established"""
         with self.assertRaises(exceptions.ConnectionError):
             with connection.connection_manager():
                 pass
+
+    def test_should_yield_value_of_global_redis(self):
+        """Should yield the value of the global redis connection"""
+        connection.global_redis = [1, 2]
+        with connection.connection_manager() as conn:
+            self.assertEquals(conn, [1, 2])
