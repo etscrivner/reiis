@@ -13,7 +13,7 @@ import redis
 
 
 # The default port used for connections
-DEFAULT_REDIS_PORT = 6397
+DEFAULT_REDIS_PORT = 6379
 
 # The global instance of the redis connection (internally pools connections)
 global_redis = None

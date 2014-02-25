@@ -1,7 +1,7 @@
 from mock import patch
-import redis
 from reiis import connection, exceptions
 from unittest import TestCase
+import redis
 
 
 class BaseConnectionTestCase(TestCase):
