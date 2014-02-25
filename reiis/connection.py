@@ -2,11 +2,14 @@
 This module contains the interface for establishing connections to redis.
 
 """
-from redis import StrictRedis
+from redis import StrictRedis, ConnectionError
 
 
 # The default port used for connections
 DEFAULT_REDIS_PORT = 6397
+
+# The global instance of the redis connection (internally pools connections)
+global_redis = None
 
 
 def setup(host, port=DEFAULT_REDIS_PORT):
@@ -19,6 +22,13 @@ def setup(host, port=DEFAULT_REDIS_PORT):
     Args:
         host: The IP address of the host server (basestring)
         port: The port to connect to (optional, default is 6379)
+
+    Raises:
+        TypeError: One of the parameters was of an invalid type.
     """
+    global global_redis
+    
     if not isinstance(host, basestring):
         raise TypeError("Expected basestring, found `{}'".format(repr(host)))
+    if not isinstance(port, (int, long)):
+        raise TypeError("Expected (int, long), found `{}'".format(repr(port)))

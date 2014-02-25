@@ -13,4 +13,14 @@ class SetupTest(TestCase):
         """Should raise TypeError if non-basestring value given for `host' argument"""
         with self.assertRaises(TypeError):
             connection.setup([1, 2])
+
+    def test_should_raise_type_error_if_port_is_none_value(self):
+        """Should raise TypeError if None given for `port' argument"""
+        with self.assertRaises(TypeError):
+            connection.setup('localhost', None)
+
+    def test_should_raise_type_error_if_port_is_non_integral_value(self):
+        """Should raise TypeError if non-integer given for `port' argument"""
+        with self.assertRaises(TypeError):
+            connection.setup('localhost', [1, 2])
         
