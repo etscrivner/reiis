@@ -3,7 +3,7 @@ across all of our objects. This module contains the interface for establishing
 the connection and handling connection specific errors that may arise.
 
 """
-nnfrom collections import namedtuple
+from collections import namedtuple
 
 import redis
 
