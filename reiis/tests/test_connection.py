@@ -1,5 +1,7 @@
-from unittest import TestCase
+from mock import patch
+import redis
 from reiis import connection
+from unittest import TestCase
 
 
 class SetupTest(TestCase):
@@ -23,4 +25,10 @@ class SetupTest(TestCase):
         """Should raise TypeError if non-integer given for `port' argument"""
         with self.assertRaises(TypeError):
             connection.setup('localhost', [1, 2])
-        
+    
+    def test_should_raise_redis_connection_error_if_connection_fails(self):
+        """Should raise redis.ConnectionError if connection fails"""
+        with self.assertRaises(redis.ConnectionError):
+            with patch.object(redis.StrictRedis, '__init__') as redis_init:
+                redis_init.side_effect = redis.ConnectionError('bad')
+                connection.setup('localhost')
