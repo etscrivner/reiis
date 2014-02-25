@@ -58,7 +58,7 @@ def connection_manager():
     >>>    connect.sadd('my-set', 1)
 
     Returns:
-        A redis connection instance that can be put to immediate use.
+        A redis connection instance.
 
     Raises:
         ConnectionError: When no connection was established prior to use.

@@ -4,7 +4,14 @@ from reiis import connection, exceptions
 from unittest import TestCase
 
 
-class SetupTest(TestCase):
+class BaseConnectionTestCase(TestCase):
+
+    def tearDown(self):
+        super(BaseConnectionTestCase, self).tearDown()
+        connection.global_redis = None
+
+
+class SetupTest(BaseConnectionTestCase):
 
     def test_should_raise_type_error_if_none_given_for_host(self):
         """Should raise TypeError if None given for `host' argument"""
@@ -33,12 +40,14 @@ class SetupTest(TestCase):
                 redis_init.side_effect = redis.ConnectionError('bad')
                 connection.setup('localhost')
 
+    def test_should_attempt_to_initialize_redis_with_given_values(self):
+        """Should attempt to initialize redis connection with given values"""
+        with patch.object(redis.StrictRedis, '__init__', return_value=None) as redis_init:
+            connection.setup('localhost', 1234)
+        redis_init.assert_called_with(host='localhost', port=1234)
 
-class ConnectionManagerTest(TestCase):
 
-    def tearDown(self):
-        super(ConnectionManagerTest, self).tearDown()
-        connection.global_redis = None
+class ConnectionManagerTest(BaseConnectionTestCase):
 
     def test_should_raise_error_if_no_connection_establish(self):
         """Should raise connection error if no connection was established"""
