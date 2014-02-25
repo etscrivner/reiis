@@ -1,7 +1,14 @@
 """In order to issue commands to redis we need to first establish a connection.
-This module contains the interface for establishing connections to redis.
+This module contains the interface for establishing connections to redis. This
+module is typically to be used to establish the initial connection to redis as
+follows:
+
+>>> import reiis
+>>> reiis.setup('localhost', 1234)
 
 """
+from contextlib import contextmanager
+from reiis.exceptions import ConnectionError
 import redis
 
 
@@ -34,4 +41,32 @@ def setup(host, port=DEFAULT_REDIS_PORT):
     if not isinstance(port, (int, long)):
         raise TypeError("Expected (int, long), found `{}'".format(repr(port)))
 
-    global_redis = redis.StrictRedis(host=host, port=port)
+    if not global_redis:
+        global_redis = redis.StrictRedis(host=host, port=port)
+
+
+@contextmanager
+def connection_manager():
+    """Retrieve global connection instance for use in code block.
+
+    In order to make retrieving a connection and using it within a block of code
+    effortless without having to constantly retrieve a connection by hand this
+    context manager is provided as a convenience mechanism. It can be used as
+    follows:
+
+    >>> with reiis.connection_manager() as connection:
+    >>>    connect.sadd('my-set', 1)
+
+    Returns:
+        A redis connection instance that can be put to immediate use.
+
+    Raises:
+        ConnectionError: When no connection was established prior to use.
+    """
+    global global_redis
+
+    if not global_redis:
+        raise ConnectionError(
+            'Attempted to use redis connection before establishing one')
+
+    yield global_redis

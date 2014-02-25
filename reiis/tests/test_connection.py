@@ -1,6 +1,6 @@
 from mock import patch
 import redis
-from reiis import connection
+from reiis import connection, exceptions
 from unittest import TestCase
 
 
@@ -32,3 +32,12 @@ class SetupTest(TestCase):
             with patch.object(redis.StrictRedis, '__init__') as redis_init:
                 redis_init.side_effect = redis.ConnectionError('bad')
                 connection.setup('localhost')
+
+
+class ConnectionManagerTest(TestCase):
+
+    def test_should_raise_error_if_no_connection_establish(self):
+        """Should raise connection error if no connection was established"""
+        with self.assertRaises(exceptions.ConnectionError):
+            with connection.connection_manager():
+                pass
