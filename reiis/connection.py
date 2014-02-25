@@ -16,7 +16,7 @@ import redis
 DEFAULT_REDIS_PORT = 6379
 
 # The global instance of the redis connection (internally pools connections)
-global_redis = None
+redis_connection = None
 
 
 def setup(host, port=DEFAULT_REDIS_PORT):
@@ -34,15 +34,15 @@ def setup(host, port=DEFAULT_REDIS_PORT):
         TypeError: One of the parameters was of an invalid type.
         redis.ConnectionError: If connection failed or pooling issue occurred.
     """
-    global global_redis
+    global redis_connection
     
     if not isinstance(host, basestring):
         raise TypeError("Expected basestring, found `{}'".format(repr(host)))
     if not isinstance(port, (int, long)):
         raise TypeError("Expected (int, long), found `{}'".format(repr(port)))
 
-    if not global_redis:
-        global_redis = redis.StrictRedis(host=host, port=port)
+    if not redis_connection:
+        redis_connection = redis.StrictRedis(host=host, port=port)
 
 
 @contextmanager
@@ -63,10 +63,10 @@ def connection_manager():
     Raises:
         ConnectionError: When no connection was established prior to use.
     """
-    global global_redis
+    global redis_connection
 
-    if not global_redis:
+    if not redis_connection:
         raise ConnectionError(
             'Attempted to use redis connection before establishing one')
 
-    yield global_redis
+    yield redis_connection

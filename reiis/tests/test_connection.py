@@ -8,7 +8,7 @@ class BaseConnectionTestCase(TestCase):
 
     def tearDown(self):
         super(BaseConnectionTestCase, self).tearDown()
-        connection.global_redis = None
+        connection.redis_connection = None
 
 
 class SetupTest(BaseConnectionTestCase):
@@ -55,8 +55,8 @@ class ConnectionManagerTest(BaseConnectionTestCase):
             with connection.connection_manager():
                 pass
 
-    def test_should_yield_value_of_global_redis(self):
+    def test_should_yield_value_of_redis_connection(self):
         """Should yield the value of the global redis connection"""
-        connection.global_redis = [1, 2]
+        connection.redis_connection = [1, 2]
         with connection.connection_manager() as conn:
             self.assertEquals(conn, [1, 2])
